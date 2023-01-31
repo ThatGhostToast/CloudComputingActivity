@@ -1,27 +1,25 @@
 package com.gcu.data.entity;
 
-/**
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-**/
 
-//@Table("ORDERS")
+@Table("ORDERS")
 public class OrderEntity 
 {
-	//@Id
+	@Id
 	Long id;
 	
-	//@Column("ORDER_NO")
+	@Column("ORDER_NO")
 	String orderNo;
 	
-	//@Column("PRODUCT_NAME")
+	@Column("PRODUCT_NAME")
 	String productName;
 	
-	//@Column("PRICE")
+	@Column("PRICE")
 	float price;
 	
-	//@Column("QUANTITY")
+	@Column("QUANTITY")
 	int quantity;
 	
 	public OrderEntity()
