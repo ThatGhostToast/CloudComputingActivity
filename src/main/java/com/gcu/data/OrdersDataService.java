@@ -3,6 +3,9 @@ package com.gcu.data;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,7 @@ import com.gcu.data.repository.OrdersRepository;
 
 @Service
 public class OrdersDataService implements DataAccessInterface<OrderEntity> {
-
+	Logger logger = LoggerFactory.getLogger(OrdersDataService.class);
 	@Autowired
 	private OrdersRepository ordersRepository;
 	@SuppressWarnings("unused")
@@ -20,12 +23,15 @@ public class OrdersDataService implements DataAccessInterface<OrderEntity> {
 	@Autowired
 	private JdbcTemplate jdbcTemplateObject;
 	public OrdersDataService(OrdersRepository ordRepo, DataSource datasource) {
+		logger.info("ENTERING: OrdersDataService Constructor");
 		this.ordersRepository = ordRepo;
 		this.dataSource = datasource;
 		//this.jdbcTemplateObject = new JdbcTemplate(datasource);
+		logger.info("EXITING: OrdersDataService Constructor");
 	}
 
 	public List<OrderEntity> findAll() {
+		logger.info("ENTERING: findAll() inside OrdersDataService");
 		List<OrderEntity> orders = new ArrayList<OrderEntity>();
 		
 		/**
@@ -54,38 +60,54 @@ public class OrdersDataService implements DataAccessInterface<OrderEntity> {
 		**/
 		
 		try {
+			logger.info("Querying the database...");
 			Iterable<OrderEntity> orderIterable = ordersRepository.findAll();
 
 			orders = new ArrayList<OrderEntity>();
 			orderIterable.forEach(orders::add);
+			logger.info("Data retrieved from database.");
 		} catch (Exception e) {
+			logger.error("Something went wrong collecting data from the database. Check findAll() inside OrdersDataService or OdersRepository");
 			e.printStackTrace();
 		}
 
+		logger.info("EXITING: findAll() inside OrdersDataService");
 		return orders;
 	}
 
 	public OrderEntity findById(int id) {
+		logger.info("ENTERING: findById() inside OrdersDataService");
+		logger.info("EXITING: findById() inside OrdersDataService");
 		return null;
 	}
 
 	public boolean create(OrderEntity order) {
+		logger.info("ENTERING: create() inside OrdersDataService");
 		String sql = "INSERT INTO ORDERS(ORDER_NO, PRODUCT_NAME, PRICE, QUANTITY)VALUES(?, ?, ?, ?)";
 		try {
+			logger.info("Querying database. SQL statement: " + sql);
 			jdbcTemplateObject.update(sql, order.getOrderNo(), order.getProductName(), order.getPrice(),
 					order.getQuantity());
 		} catch (Exception e) {
+			logger.error("SOMETHING WENT WRONG ADDING TO THE DATABASE. Check create() in OrdersDataService");
 			e.printStackTrace();
+			logger.info("EXITING: create() in OrdersDataService");
 			return false;
 		}
+		logger.info("Data added to the database successfully");
+		logger.info("EXITING: create() in OrdersDataService");
 		return true;
 	}
 
 	public boolean update(OrderEntity t) {
+		logger.info("ENTERING: update() in OrdersDataService");
+		logger.info("EXITING: update() in OrdersDataService");
 		return true;
 	}
 
 	public boolean delete(OrderEntity t) {
+		logger.info("ENTERING: delete() in OrdersDataService");
+		logger.info("EXITING: delete() in OrdersDataService");
 		return true;
 	}
 

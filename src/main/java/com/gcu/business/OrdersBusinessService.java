@@ -2,9 +2,9 @@ package com.gcu.business;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.gcu.data.OrdersDataService;
 import com.gcu.data.entity.OrderEntity;
 import com.gcu.model.OrderModel;
@@ -17,27 +17,30 @@ import com.gcu.model.OrderModel;
 public class OrdersBusinessService implements OrdersBusinessServiceInterface {
 	@Autowired
 	OrdersDataService service;
+	
+	Logger logger = LoggerFactory.getLogger(OrdersBusinessService.class);
 
 	@Override
 	public void test() {
-		System.out.println("Hello from the OrdersBusinessService.");
+		System.out.println("Inside OrdersBusinessService.");
 	}
 
 	@Override
 	public void init() {
-		System.out.println("Hello from init() in OrdersBusinessService");
-		
+		logger.info("Initializing OrdersBusinessService");
 	}
 
 	@Override
 	public void destroy() {
-		System.out.println("Hello from destroy() in OrdersBusinessService");
-		
+		logger.info("Destroying OrdersBusinessService");
 	}
 
 	@Override
 	public List<OrderModel> getOrders()
 	{
+		logger.info("ENTERING: getOrders() inside OrdersBusinessService");
+		logger.info("COLLECTING DATA FROM DATABASE...");
+		
 		List<OrderEntity> ordersEntity = service.findAll();
 		
 		List<OrderModel> ordersDomain = new ArrayList<OrderModel>();
@@ -46,6 +49,13 @@ public class OrdersBusinessService implements OrdersBusinessServiceInterface {
 			ordersDomain.add(new OrderModel(entity.getId(), entity.getOrderNo(), entity.getProductName(), entity.getPrice(), entity.getQuantity()));
 		}
 		
+		if (ordersDomain.isEmpty())
+		{
+			logger.error("NO DATA FOUND: Is the database connected?");
+		} else {
+			logger.info("DATA COLLECTED FROM DATA SERVICE. RETURNING.");
+		}	
+		logger.info("EXITING: getOrders() inside OrdersBusinessService");
 		return ordersDomain;
 		
 	}
