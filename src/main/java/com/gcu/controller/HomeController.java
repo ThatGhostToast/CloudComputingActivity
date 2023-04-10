@@ -17,5 +17,6 @@ public class HomeController {
 		logger.info("ENTERING: Root directory of the application ('/')");
 		logger.info("EXITING: Root directory of the application. Redirecting user to login");
 		return "redirect:/login/";
+		
 	}
 }
