@@ -8,7 +8,7 @@
 	<body>
 	  <div layout:fragment="content">
 		<form action="#" th:action="@{doLogin}" th:object="${loginModel}" method="POST">
-			<div>Hello Heroku</div>
+			<div>Hello Heroku</div> 
 			<table>
 				<tr>
 					<td>Username:</td><td><input type="text" th:field="*{username}"></td><td><h5 style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</h5></td>
